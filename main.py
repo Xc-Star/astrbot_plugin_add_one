@@ -2,7 +2,7 @@ from astrbot.api.event import filter, AstrMessageEvent, MessageEventResult
 from astrbot.api.star import Context, Star, register
 from astrbot.api import logger
 
-@register("astrbot_plugin_add_one", "Xc_Star", "自动+1", "1.0.0")
+@register("astrbot_plugin_add_one", "Xc_Star", "自动+1", "1.0.1")
 class MyPlugin(Star):
     def __init__(self, context: Context):
         self.last_msg = ""
@@ -15,7 +15,7 @@ class MyPlugin(Star):
     # 注册指令的装饰器。指令名为 helloworld。注册成功后，发送 `/helloworld` 就会触发这个指令，并回复 `你好, {user_name}!`
     @filter.event_message_type(filter.EventMessageType.ALL)
     async def add_one(self, event: AstrMessageEvent):
-        this_msg = event.get_messages()
+        this_msg = str(event.get_message_str())
         if this_msg == self.last_msg and not self.is_added:
             self.is_added = True
             yield event.plain_result(this_msg) # 发送一条纯文本消息
