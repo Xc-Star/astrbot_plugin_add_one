@@ -2,7 +2,7 @@ from astrbot.api.event import filter, AstrMessageEvent, MessageEventResult
 from astrbot.api.star import Context, Star, register
 from astrbot.api import logger
 
-@register("astrbot_plugin_add_one", "Xc_Star", "自动+1", "1.0.1")
+@register("astrbot_plugin_add_one", "Xc_Star", "自动+1", "1.0.2")
 class MyPlugin(Star):
     def __init__(self, context: Context):
         self.last_msg = ""
@@ -21,6 +21,7 @@ class MyPlugin(Star):
             yield event.plain_result(this_msg) # 发送一条纯文本消息
 
         self.last_msg = this_msg
+        self.is_added = False
 
     async def terminate(self):
         """可选择实现异步的插件销毁方法，当插件被卸载/停用时会调用。"""
