@@ -2,7 +2,7 @@ from astrbot.api.event import filter, AstrMessageEvent, MessageEventResult
 from astrbot.api.star import Context, Star, register
 from astrbot.api import logger
 
-@register("astrbot_plugin_add_one", "Xc_Star", "自动+1", "1.0.3")
+@register("astrbot_plugin_add_one", "Xc_Star", "自动+1", "1.0.4")
 class MyPlugin(Star):
     def __init__(self, context: Context):
         self.last_msg = ""
@@ -20,7 +20,7 @@ class MyPlugin(Star):
             self.is_added = True
             yield event.plain_result(this_msg) # 发送一条纯文本消息
 
-        if not self.is_added and self.last_msg != this_msg:
+        if self.is_added and self.last_msg != this_msg:
             self.is_added = False
 
         self.last_msg = this_msg
