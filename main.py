@@ -2,7 +2,7 @@ from astrbot.api.event import filter, AstrMessageEvent, MessageEventResult
 from astrbot.api.star import Context, Star, register
 from astrbot.api import logger
 
-@register("astrbot_plugin_add_one", "Xc_Star", "自动+1", "1.0.5")
+@register("astrbot_plugin_add_one", "Xc_Star", "自动+1", "1.0.6")
 class MyPlugin(Star):
     def __init__(self, context: Context):
         self.last_msg = {}
@@ -17,12 +17,15 @@ class MyPlugin(Star):
     async def add_one(self, event: AstrMessageEvent):
         this_msg = str(event.get_message_str())
         this_group_id = int(event.get_group_id())
-        if this_msg == self.last_msg.get(this_group_id) and not self.is_added:
-            self.is_added = True
+        if not self.last_msg.get(this_group_id + "_status"):
+            self.last_msg[this_group_id + "_status"] = False
+
+        if this_msg == self.last_msg.get(this_group_id) and not self.last_msg.get(this_group_id + "_status"):
+            self.last_msg[this_group_id + "_status"] = True
             yield event.plain_result(this_msg) # 发送一条纯文本消息
 
-        if self.is_added and self.last_msg.get(this_group_id) != this_msg:
-            self.is_added = False
+        if self.last_msg.get(this_group_id + "_status") and self.last_msg.get(this_group_id) != this_msg:
+            self.last_msg[this_group_id + "_status"] = False
 
         self.last_msg[this_group_id] = this_msg
 
