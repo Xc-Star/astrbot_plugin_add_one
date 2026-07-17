@@ -2,7 +2,7 @@ from astrbot.api.event import filter, AstrMessageEvent, MessageEventResult
 from astrbot.api.star import Context, Star, register
 from astrbot.api import logger
 
-@register("astrbot_plugin_add_one", "Xc_Star", "自动+1", "1.0.6")
+@register("astrbot_plugin_add_one", "Xc_Star", "自动+1", "1.0.7")
 class MyPlugin(Star):
     def __init__(self, context: Context):
         self.last_msg = {}
@@ -16,7 +16,7 @@ class MyPlugin(Star):
     @filter.event_message_type(filter.EventMessageType.ALL)
     async def add_one(self, event: AstrMessageEvent):
         this_msg = str(event.get_message_str())
-        this_group_id = int(event.get_group_id())
+        this_group_id = str(event.get_group_id())
         if not self.last_msg.get(this_group_id + "_status"):
             self.last_msg[this_group_id + "_status"] = False
 
